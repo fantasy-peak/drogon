@@ -231,6 +231,20 @@ class DROGON_EXPORT HttpClient : public trantor::NonCopyable
     virtual void setUserAgent(const std::string &userAgent) = 0;
 
     /**
+     * @brief Pre create tcp connection, It must be called after all settings
+     * are completed
+     *
+     * auto client = HttpClient::newHttpClient("http://www.baidu.com");
+     * client->setSockOptCallback([](int fd) {});
+     * ...
+     * client->createTcpClient([] {});
+     *
+     * @param cb When the tcp connection is successfully created, it will be
+     * called
+     */
+    virtual void createTcpClient(const std::function<void()> &cb) = 0;
+
+    /**
      * @brief Create a new HTTP client which use ip and port to connect to
      * server
      *

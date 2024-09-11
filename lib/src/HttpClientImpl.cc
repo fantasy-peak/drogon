@@ -727,3 +727,22 @@ void HttpClientImpl::addSSLConfigs(
         sslConfCmds_.push_back(cmd);
     }
 }
+
+void HttpClientImpl::createTcpClient(const std::function<void()> &cb)
+{
+    auto func = [this, cb] {
+        if (!tcpClientPtr_)
+        {
+            createTcpClient();
+        }
+        cb();
+    };
+    if (loop_->isInLoopThread())
+    {
+        func();
+    }
+    else
+    {
+        loop_->queueInLoop([func = std::move(func)] { func(); });
+    }
+}

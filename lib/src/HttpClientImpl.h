@@ -133,6 +133,8 @@ class HttpClientImpl final : public HttpClient,
         }
     }
 
+    void createTcpClient(const std::function<void()> &cb) override;
+
   private:
     std::shared_ptr<trantor::TcpClient> tcpClientPtr_;
     trantor::EventLoop *loop_;
